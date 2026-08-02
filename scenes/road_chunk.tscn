@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dvk4jb54pokna"]
+
+[ext_resource type="Script" uid="uid://b8stw4dmwtnnq" path="res://scripts/road_chunk.gd" id="1_32ehi"]
+[ext_resource type="Material" uid="uid://bejgjdumb2snd" path="res://materials/road_material.tres" id="2_kbnab"]
+
+[node name="RoadChunk" type="Node3D"]
+script = ExtResource("1_32ehi")
+road_material = ExtResource("2_kbnab")
+
+[node name="RoadMesh" type="MeshInstance3D" parent="."]

@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpyru2mqqcaot"]
+
+[ext_resource type="Script" uid="uid://m0fxiaprwggv" path="res://scripts/terrain_chunk.gd" id="1_6g70i"]
+[ext_resource type="Material" uid="uid://bbki7mr1kbfre" path="res://materials/terrain_material.tres" id="2_8u72k"]
+
+[node name="TerrainChunk" type="Node3D"]
+script = ExtResource("1_6g70i")
+terrain_material = ExtResource("2_8u72k")
+macro_height = null
+rolling_height = null
+mesa_height = null
+ridge_height = null
+detail_height = null
+lowland_depth = null
+road_embankment_trigger = null
+road_embankment_transition = null
+road_max_embankment_height = null
+road_ground_sample_spacing = 18.0
+road_ground_sample_radius = 3
+road_max_cut_depth = null
+road_ground_clearance = null
+road_valley_floor = 0.75
+road_valley_variation = 0.75
+
+[node name="TerrainMesh" type="MeshInstance3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TerrainMesh"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TerrainMesh/StaticBody3D"]

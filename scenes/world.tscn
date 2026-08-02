@@ -1,0 +1,57 @@
+[gd_scene load_steps=12 format=3 uid="uid://ciqq34403qeb4"]
+
+[ext_resource type="Script" uid="uid://dnwrjss117uad" path="res://scripts/world_generator.gd" id="1_71j4m"]
+[ext_resource type="Script" uid="uid://b6ljfqr5viau0" path="res://scripts/terrain_manager.gd" id="1_nnsk1"]
+[ext_resource type="PackedScene" uid="uid://bpyru2mqqcaot" path="res://scenes/terrain_chunk.tscn" id="2_rwgxs"]
+[ext_resource type="Script" uid="uid://pv7ib6hd2q6k" path="res://scripts/player.gd" id="3_4wyf3"]
+[ext_resource type="Texture2D" uid="uid://c6xdk5ukbsfiy" path="res://kloppenheim_05_puresky_2k.exr" id="4_k0juu"]
+[ext_resource type="Script" uid="uid://dvs07yennblk0" path="res://scripts/road_manager.gd" id="4_qfnet"]
+[ext_resource type="PackedScene" uid="uid://dvk4jb54pokna" path="res://scenes/road_chunk.tscn" id="5_i7141"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rwgxs"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_71j4m"]
+panorama = ExtResource("4_k0juu")
+
+[sub_resource type="Sky" id="Sky_qfnet"]
+sky_material = SubResource("PanoramaSkyMaterial_71j4m")
+
+[sub_resource type="Environment" id="Environment_4wyf3"]
+background_mode = 2
+sky = SubResource("Sky_qfnet")
+fog_sky_affect = 0.0
+
+[node name="World" type="Node3D"]
+
+[node name="WorldGenerator" type="Node" parent="."]
+script = ExtResource("1_71j4m")
+
+[node name="TerrainManager" type="Node3D" parent="." node_paths=PackedStringArray("player", "world_generator")]
+script = ExtResource("1_nnsk1")
+player = NodePath("../Player")
+terrain_chunk_scene = ExtResource("2_rwgxs")
+world_generator = NodePath("../WorldGenerator")
+max_chunks_per_frame = 2
+
+[node name="RoadManager" type="Node3D" parent="." node_paths=PackedStringArray("player", "world_generator")]
+script = ExtResource("4_qfnet")
+player = NodePath("../Player")
+world_generator = NodePath("../WorldGenerator")
+road_chunk_scene = ExtResource("5_i7141")
+render_distance = 16
+
+[node name="Player" type="CharacterBody3D" parent="."]
+script = ExtResource("3_4wyf3")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+current = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_rwgxs")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_4wyf3")
