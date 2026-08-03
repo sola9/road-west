@@ -4,6 +4,7 @@ extends Node3D
 @export var player: Node3D
 @export var terrain_chunk_scene: PackedScene
 @export var world_generator: WorldGenerator
+@export var floating_origin: FloatingOrigin
 
 @export_category("Chunk Settings")
 @export var chunk_size: float = 64.0
@@ -84,6 +85,17 @@ func _ready() -> void:
 		push_error("TerrainManager does not have a chunk scene assigned.")
 		return
 		
+	if floating_origin == null:
+		push_error("TerrainManager does not have a FloatingOrigin assigned.")
+		return
+
+	if not floating_origin.origin_shifted.is_connected(
+		_on_origin_shifted
+	):
+		floating_origin.origin_shifted.connect(
+			_on_origin_shifted
+		)
+		
 	var starting_coordinate := _world_position_to_chunk(
 		player.global_position
 	)
@@ -100,15 +112,27 @@ func _process(_delta: float) -> void:
 	_process_generation_queue()
 	
 func _world_position_to_chunk(
-	world_position: Vector3
+	local_position: Vector3
 ) -> Vector2i:
+	var absolute_x: float = (
+		floating_origin.local_to_absolute_x(
+			float(local_position.x)
+		)
+	)
+
+	var absolute_z: float = (
+		floating_origin.local_to_absolute_z(
+			float(local_position.z)
+		)
+	)
+
 	return Vector2i(
 		floori(
-			(world_position.x + chunk_size * 0.5)
+			(absolute_x + chunk_size * 0.5)
 			/ chunk_size
 		),
 		floori(
-			(world_position.z + chunk_size * 0.5)
+			(absolute_z + chunk_size * 0.5)
 			/ chunk_size
 		)
 	)
@@ -223,7 +247,8 @@ func _create_chunk(
 		coordinate,
 		chunk_size,
 		target_resolution,
-		world_generator
+		world_generator,
+		floating_origin
 	)
 
 	loaded_chunks[coordinate] = chunk
@@ -261,9 +286,21 @@ func _place_player_on_terrain() -> void:
 		)
 		return
 
+	var absolute_x: float = (
+		floating_origin.local_to_absolute_x(
+			float(player.global_position.x)
+		)
+	)
+
+	var absolute_z: float = (
+		floating_origin.local_to_absolute_z(
+			float(player.global_position.z)
+		)
+	)
+
 	var ground_height := world_generator.get_world_height(
-		player.global_position.x,
-		player.global_position.z
+		absolute_x,
+		absolute_z
 	)
 
 	player.global_position.y = (
@@ -619,7 +656,8 @@ func _rebuild_chunk(
 		coordinate,
 		chunk_size,
 		target_resolution,
-		world_generator
+		world_generator,
+		floating_origin
 	)
 
 	var collision_should_be_active := (
@@ -643,3 +681,18 @@ func _should_chunk_have_collision(
 	)
 
 	return distance <= collision_distance
+
+func _on_origin_shifted(shift: Vector3) -> void:
+	for key in loaded_chunks.keys():
+		var coordinate: Vector2i = key
+
+		var chunk: TerrainChunk = (
+			loaded_chunks.get(coordinate)
+			as TerrainChunk
+		)
+
+		if not is_instance_valid(chunk):
+			continue
+
+		chunk.global_position -= shift
+		chunk.reset_physics_interpolation()

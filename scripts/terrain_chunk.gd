@@ -71,28 +71,46 @@ var cached_height_data := PackedFloat32Array()
 var cached_vertices_per_side: int = 0
 var cached_step: float = 1.0
 
+var floating_origin: FloatingOrigin
+
+var absolute_origin_x: float = 0.0
+var absolute_origin_z: float = 0.0
+
 func generate(
 	new_chunk_coordinate: Vector2i,
 	new_chunk_size: float,
 	new_resolution: int,
-	new_world_generator: WorldGenerator
+	new_world_generator: WorldGenerator,
+	new_floating_origin: FloatingOrigin
 ) -> void:
 	chunk_coordinate = new_chunk_coordinate
 	chunk_size = new_chunk_size
 	resolution = new_resolution
 	current_resolution = new_resolution
+
 	world_generator = new_world_generator
-	collision_shape.set_deferred("disabled", true)
-	collision_shape.shape = null
+	floating_origin = new_floating_origin
 
-	cached_height_data = PackedFloat32Array()
-	cached_vertices_per_side = 0
-	cached_step = 1.0
+	# These are permanent logical coordinates.
+	absolute_origin_x = (
+		float(chunk_coordinate.x) * chunk_size
+		- chunk_size * 0.5
+	)
 
+	absolute_origin_z = (
+		float(chunk_coordinate.y) * chunk_size
+		- chunk_size * 0.5
+	)
+
+	# This is the temporary local Godot position.
 	position = Vector3(
-		chunk_coordinate.x * chunk_size - chunk_size * 0.5,
+		floating_origin.absolute_to_local_x(
+			absolute_origin_x
+		),
 		0.0,
-		chunk_coordinate.y * chunk_size - chunk_size * 0.5
+		floating_origin.absolute_to_local_z(
+			absolute_origin_z
+		)
 	)
 
 	_generate_terrain()
@@ -121,13 +139,9 @@ func _generate_terrain() -> void:
 			var local_x := x_index * step
 			var local_z := z_index * step
 
-			var world_x := position.x + local_x
-			var world_z := position.z + local_z
+			var world_x: float = absolute_origin_x + local_x
+			var world_z: float = absolute_origin_z + local_z
 
-			#var height := get_world_height(
-			#	world_x,
-			#	world_z
-			#)
 			var height := world_generator.get_world_height(
 				world_x,
 				world_z
@@ -141,10 +155,7 @@ func _generate_terrain() -> void:
 			height_data[vertex_index] = height
 
 			surface_tool.set_uv(
-				Vector2(
-					world_x / 8.0,
-					world_z / 8.0
-				)
+				_get_terrain_uv(local_x, local_z)
 			)
 
 			surface_tool.add_vertex(
@@ -266,4 +277,40 @@ func set_collision_active(active: bool) -> void:
 	collision_shape.set_deferred(
 		"disabled",
 		not active
+	)
+
+@export var terrain_texture_repeat_length: float = 8.0
+
+const UV_CHUNK_WRAP: int = 256
+
+
+func _get_terrain_uv(
+	local_x: float,
+	local_z: float
+) -> Vector2:
+	var wrapped_chunk_x := posmod(
+		chunk_coordinate.x,
+		UV_CHUNK_WRAP
+	)
+
+	var wrapped_chunk_z := posmod(
+		chunk_coordinate.y,
+		UV_CHUNK_WRAP
+	)
+
+	var wrapped_world_x := (
+		float(wrapped_chunk_x) * chunk_size
+		+ local_x
+	)
+
+	var wrapped_world_z := (
+		float(wrapped_chunk_z) * chunk_size
+		+ local_z
+	)
+
+	return Vector2(
+		wrapped_world_x
+			/ terrain_texture_repeat_length,
+		wrapped_world_z
+			/ terrain_texture_repeat_length
 	)

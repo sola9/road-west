@@ -5,6 +5,7 @@ extends Node3D
 @export var player: Node3D
 @export var world_generator: WorldGenerator
 @export var road_chunk_scene: PackedScene
+@export var floating_origin: FloatingOrigin
 
 @export var road_chunk_length: float = 64.0
 @export_range(1, 30) var render_distance: int = 8
@@ -26,6 +27,17 @@ func _ready() -> void:
 	if road_chunk_scene == null:
 		push_error("RoadManager does not have a road chunk scene assigned.")
 		return
+		
+	if floating_origin == null:
+		push_error("RoadManager does not have a FloatingOrigin assigned.")
+		return
+
+	if not floating_origin.origin_shifted.is_connected(
+		_on_origin_shifted
+	):
+		floating_origin.origin_shifted.connect(
+			_on_origin_shifted
+		)
 
 	world_generator.ensure_configured()
 	_update_chunks(true)
@@ -35,16 +47,20 @@ func _process(_delta: float) -> void:
 	_update_chunks(false)
 
 
-func _world_z_to_chunk(world_z: float) -> int:
+func _local_z_to_chunk(local_z: float) -> int:
+	var absolute_z: float = (
+		floating_origin.local_to_absolute_z(local_z)
+	)
+
 	return floori(
-		(world_z + road_chunk_length * 0.5)
+		(absolute_z + road_chunk_length * 0.5)
 		/ road_chunk_length
 	)
 
 
 func _update_chunks(force_update: bool) -> void:
-	var new_player_chunk := _world_z_to_chunk(
-		player.global_position.z
+	var new_player_chunk := _local_z_to_chunk(
+		float(player.global_position.z)
 	)
 
 	if (
@@ -99,7 +115,8 @@ func _create_chunk(chunk_index: int) -> void:
 	chunk.generate(
 		chunk_index,
 		road_chunk_length,
-		world_generator
+		world_generator,
+		floating_origin
 	)
 
 	loaded_chunks[chunk_index] = chunk
@@ -114,3 +131,18 @@ func _remove_chunk(chunk_index: int) -> void:
 		chunk.queue_free()
 
 	loaded_chunks.erase(chunk_index)
+	
+func _on_origin_shifted(shift: Vector3) -> void:
+	for key in loaded_chunks.keys():
+		var chunk_index: int = key
+
+		var chunk: RoadChunk = (
+			loaded_chunks.get(chunk_index)
+			as RoadChunk
+		)
+
+		if not is_instance_valid(chunk):
+			continue
+
+		chunk.global_position -= shift
+		chunk.reset_physics_interpolation()

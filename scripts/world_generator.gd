@@ -1,6 +1,7 @@
 class_name WorldGenerator
 extends Node
 
+@export var floating_origin: FloatingOrigin
 
 @export_category("World")
 @export var world_seed: int = 12345
@@ -51,6 +52,14 @@ var is_configured := false
 
 func _ready() -> void:
 	ensure_configured()
+	
+	if floating_origin != null:
+		if not floating_origin.origin_shifted.is_connected(
+			_on_origin_shifted
+		):
+			floating_origin.origin_shifted.connect(
+				_on_origin_shifted
+			)
 
 
 func ensure_configured() -> void:
@@ -419,3 +428,9 @@ func get_smoothed_ground_below_road(
 		return 0.0
 
 	return weighted_height / total_weight
+	
+func clear_runtime_caches() -> void:
+	road_height_cache.clear()
+	
+func _on_origin_shifted(_shift: Vector3) -> void:
+	clear_runtime_caches()
