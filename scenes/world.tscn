@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ciqq34403qeb4"]
+[gd_scene format=3 uid="uid://ciqq34403qeb4"]
 
 [ext_resource type="Script" uid="uid://dnwrjss117uad" path="res://scripts/world_generator.gd" id="1_71j4m"]
 [ext_resource type="Script" uid="uid://b6ljfqr5viau0" path="res://scripts/terrain_manager.gd" id="1_nnsk1"]
@@ -25,17 +25,17 @@ background_mode = 2
 sky = SubResource("Sky_qfnet")
 fog_sky_affect = 0.0
 
-[node name="World" type="Node3D"]
+[node name="World" type="Node3D" unique_id=994033353]
 
-[node name="WorldGenerator" type="Node" parent="." node_paths=PackedStringArray("floating_origin")]
+[node name="WorldGenerator" type="Node" parent="." unique_id=1089810936 node_paths=PackedStringArray("floating_origin")]
 script = ExtResource("1_71j4m")
 floating_origin = NodePath("../FloatingOrigin")
 
-[node name="FloatingOrigin" type="Node" parent="." node_paths=PackedStringArray("player")]
+[node name="FloatingOrigin" type="Node" parent="." unique_id=669139200 node_paths=PackedStringArray("player")]
 script = ExtResource("2_4mrxx")
 player = NodePath("../Player")
 
-[node name="TerrainManager" type="Node3D" parent="." node_paths=PackedStringArray("player", "world_generator", "floating_origin")]
+[node name="TerrainManager" type="Node3D" parent="." unique_id=1776202980 node_paths=PackedStringArray("player", "world_generator", "floating_origin")]
 script = ExtResource("1_nnsk1")
 player = NodePath("../Player")
 terrain_chunk_scene = ExtResource("2_rwgxs")
@@ -43,7 +43,7 @@ world_generator = NodePath("../WorldGenerator")
 floating_origin = NodePath("../FloatingOrigin")
 max_chunks_per_frame = 2
 
-[node name="RoadManager" type="Node3D" parent="." node_paths=PackedStringArray("player", "world_generator", "floating_origin")]
+[node name="RoadManager" type="Node3D" parent="." unique_id=127606650 node_paths=PackedStringArray("player", "world_generator", "floating_origin")]
 script = ExtResource("4_qfnet")
 player = NodePath("../Player")
 world_generator = NodePath("../WorldGenerator")
@@ -51,25 +51,25 @@ road_chunk_scene = ExtResource("5_i7141")
 floating_origin = NodePath("../FloatingOrigin")
 render_distance = 16
 
-[node name="Player" type="CharacterBody3D" parent="."]
+[node name="Player" type="CharacterBody3D" parent="." unique_id=1307345321]
 script = ExtResource("3_4wyf3")
 
-[node name="Camera3D" type="Camera3D" parent="Player"]
+[node name="Camera3D" type="Camera3D" parent="Player" unique_id=1500924994]
 current = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=1295132946]
 shape = SubResource("CapsuleShape3D_rwgxs")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=440211246]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=666788397]
 environment = SubResource("Environment_4wyf3")
 
-[node name="PauseMenu" type="CanvasLayer" parent="."]
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=1882488678]
 process_mode = 3
 script = ExtResource("9_7r4gi")
 
-[node name="PausePanel" type="Control" parent="PauseMenu"]
+[node name="PausePanel" type="Control" parent="PauseMenu" unique_id=1090175870]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -77,7 +77,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="PauseMenu/PausePanel"]
+[node name="CenterContainer" type="CenterContainer" parent="PauseMenu/PausePanel" unique_id=1669180417]
 z_index = 1
 layout_mode = 1
 anchors_preset = 15
@@ -86,30 +86,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="PauseMenu/PausePanel/CenterContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="PauseMenu/PausePanel/CenterContainer" unique_id=1466862378]
 z_index = 1
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/PausePanel/CenterContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/PausePanel/CenterContainer/PanelContainer" unique_id=1446517325]
 z_index = 1
 layout_mode = 2
 
-[node name="PausedLabel" type="Label" parent="PauseMenu/PausePanel/CenterContainer/PanelContainer/VBoxContainer"]
+[node name="PausedLabel" type="Label" parent="PauseMenu/PausePanel/CenterContainer/PanelContainer/VBoxContainer" unique_id=1451307918]
 z_index = 1
 layout_mode = 2
 text = "Paused"
 
-[node name="ResumeButton" type="Button" parent="PauseMenu/PausePanel/CenterContainer/PanelContainer/VBoxContainer"]
+[node name="ResumeButton" type="Button" parent="PauseMenu/PausePanel/CenterContainer/PanelContainer/VBoxContainer" unique_id=511184102]
 z_index = 1
 layout_mode = 2
 text = "Resume"
 
-[node name="QuitButton" type="Button" parent="PauseMenu/PausePanel/CenterContainer/PanelContainer/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="PauseMenu/PausePanel/CenterContainer/PanelContainer/VBoxContainer" unique_id=786840506]
 z_index = 1
 layout_mode = 2
 text = "Quit"
 
-[node name="PauseTint" type="ColorRect" parent="PauseMenu/PausePanel"]
+[node name="PauseTint" type="ColorRect" parent="PauseMenu/PausePanel" unique_id=1203268738]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

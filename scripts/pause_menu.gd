@@ -46,7 +46,6 @@ func set_paused(should_pause: bool) -> void:
 		# Hide and recenter the cursor for gameplay.
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-
 func _on_resume_button_pressed() -> void:
 	set_paused(false)
 
