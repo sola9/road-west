@@ -1,7 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://bejgjdumb2snd"]
-
-[ext_resource type="Texture2D" uid="uid://dq6mrbgygjsun" path="res://materials/ground_asphalt_old_03.png" id="1_txfw6"]
-
-[resource]
-albedo_color = Color(0.8260602, 0.82606, 0.82605976, 1)
-albedo_texture = ExtResource("1_txfw6")
