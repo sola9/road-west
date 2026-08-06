@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dbcc174ogyb7m"]
+
+[ext_resource type="Shader" uid="uid://buylvavfytvxn" path="res://shaders/road_fade.gdshader" id="1_ohu0a"]
+[ext_resource type="Texture2D" uid="uid://dq6mrbgygjsun" path="res://materials/ground_asphalt_old_03.png" id="2_bep2w"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ohu0a")
+shader_parameter/use_asphalt_texture = true
+shader_parameter/asphalt_texture = ExtResource("2_bep2w")
+shader_parameter/asphalt_tint = Color(0.7812578, 0.7630408, 0.75096434, 1)
+shader_parameter/edge_fade_width = 0.030000001425000002
+shader_parameter/roughness = 0.92
+shader_parameter/specular = 0.15

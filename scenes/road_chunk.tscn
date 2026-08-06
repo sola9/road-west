@@ -1,10 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://dvk4jb54pokna"]
+[gd_scene format=3 uid="uid://dvk4jb54pokna"]
 
 [ext_resource type="Script" uid="uid://b8stw4dmwtnnq" path="res://scripts/road_chunk.gd" id="1_32ehi"]
-[ext_resource type="Material" uid="uid://bejgjdumb2snd" path="res://materials/road_material.tres" id="2_kbnab"]
+[ext_resource type="Material" uid="uid://dbcc174ogyb7m" path="res://materials/road_fade_material.tres" id="2_kbnab"]
+[ext_resource type="Material" uid="uid://b5omxgaydxwtd" path="res://materials/road_line_yellow_worn.tres" id="3_ddujo"]
+[ext_resource type="Material" uid="uid://dj1aegu14vhsg" path="res://materials/road_line_white_worn.tres" id="4_vjars"]
 
-[node name="RoadChunk" type="Node3D"]
+[node name="RoadChunk" type="Node3D" unique_id=2075587488]
 script = ExtResource("1_32ehi")
 road_material = ExtResource("2_kbnab")
+yellow_line_material = ExtResource("3_ddujo")
+white_line_material = ExtResource("4_vjars")
+edge_line_inset = 0.8
 
-[node name="RoadMesh" type="MeshInstance3D" parent="."]
+[node name="RoadMesh" type="MeshInstance3D" parent="." unique_id=1810353141]
+
+[node name="RoadMarkings" type="MeshInstance3D" parent="." unique_id=2137977790]
+cast_shadow = 0

@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dj1aegu14vhsg"]
+
+[ext_resource type="Shader" uid="uid://ck0fwene2g8uq" path="res://shaders/worn_road_paint.gdshader" id="1_xhgee"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_xhgee")
+shader_parameter/paint_color = Color(0.9, 0.9, 0.9, 1)
+shader_parameter/roughness = 0.85999998077728
+shader_parameter/wear_amount = 0.0999999977648
+shader_parameter/edge_wear = 0.3499999921768
+shader_parameter/wear_softness = 0.035
+shader_parameter/color_variation = 0.12999999709424
+shader_parameter/marking_width = 0.14
+shader_parameter/longitudinal_uv_length = 8.0
+shader_parameter/wear_frequency = 1.10000001639132
+shader_parameter/large_wear_frequency = 1.8

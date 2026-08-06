@@ -30,6 +30,7 @@ fog_sky_affect = 0.0
 [node name="WorldGenerator" type="Node" parent="." unique_id=1089810936 node_paths=PackedStringArray("floating_origin")]
 script = ExtResource("1_71j4m")
 floating_origin = NodePath("../FloatingOrigin")
+road_width = 10.0
 
 [node name="FloatingOrigin" type="Node" parent="." unique_id=669139200 node_paths=PackedStringArray("player")]
 script = ExtResource("2_4mrxx")

@@ -11,8 +11,28 @@ var target_segment_length: float = 2.0
 
 @export var texture_repeat_length: float = 8.0
 
+@export_category("Road Markings")
+
+@export var yellow_line_material: Material
+@export var white_line_material: Material
+
+# Width of each individual yellow line.
+@export var center_line_width: float = 0.14
+
+# Empty space between the two yellow lines.
+@export var center_line_gap: float = 0.16
+
+@export var edge_line_width: float = 0.14
+
+# Distance from the asphalt edge to the center of the white line.
+@export var edge_line_inset: float = 0.45
+
+# Prevents markings from flickering against the asphalt.
+@export var marking_height_offset: float = 0.025
 
 @onready var road_mesh_instance: MeshInstance3D = $RoadMesh
+@onready var road_markings_instance: MeshInstance3D = \
+	$RoadMarkings
 
 
 var chunk_index: int
@@ -62,6 +82,7 @@ func generate(
 	)
 
 	_generate_road()
+	_generate_markings()
 
 
 func _generate_road() -> void:
@@ -193,3 +214,246 @@ func _generate_road() -> void:
 
 	if road_material != null:
 		road_mesh_instance.material_override = road_material
+		
+func _generate_markings() -> void:
+	var markings_mesh := ArrayMesh.new()
+
+	var half_center_gap := center_line_gap * 0.5
+	var half_center_width := center_line_width * 0.5
+
+	var center_offset := (
+		half_center_gap
+		+ half_center_width
+	)
+
+	var center_offsets: Array[float] = [
+		-center_offset,
+		center_offset
+	]
+
+	_append_marking_surface(
+		markings_mesh,
+		center_offsets,
+		center_line_width,
+		yellow_line_material,
+		0.0
+	)
+
+	var road_half_width := (
+		world_generator.road_width * 0.5
+	)
+
+	var edge_offset := (
+		road_half_width
+		- edge_line_inset
+	)
+
+	var edge_offsets: Array[float] = [
+		-edge_offset,
+		edge_offset
+	]
+
+	_append_marking_surface(
+		markings_mesh,
+		edge_offsets,
+		edge_line_width,
+		white_line_material,
+		10.0
+	)
+
+	road_markings_instance.mesh = markings_mesh
+
+func _append_marking_surface(
+	target_mesh: ArrayMesh,
+	lateral_offsets: Array[float],
+	line_width: float,
+	line_material: Material,
+	pattern_group_offset: float
+) -> void:
+	if line_material == null:
+		return
+
+	if lateral_offsets.is_empty():
+		return
+
+	var segment_count := maxi(
+		1,
+		ceili(
+			chunk_length
+			/ target_segment_length
+		)
+	)
+
+	var segment_length := (
+		chunk_length
+		/ float(segment_count)
+	)
+
+	var repeats_per_chunk := (
+		chunk_length
+		/ texture_repeat_length
+	)
+
+	const UV_WRAP_CHUNKS: int = 128
+
+	var wrapped_chunk_index := posmod(
+		chunk_index,
+		UV_WRAP_CHUNKS
+	)
+
+	var bounded_uv_base := (
+		float(wrapped_chunk_index)
+		* repeats_per_chunk
+	)
+
+	var surface_tool := SurfaceTool.new()
+	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	surface_tool.set_material(line_material)
+
+	var first_strip_vertex := 0
+
+	for strip_index in range(lateral_offsets.size()):
+		var lateral_offset: float = lateral_offsets[strip_index]
+
+		# Give each strip a deterministic but different pattern offset.
+		var pattern_offset := Vector2(
+			float(strip_index) * 17.37,
+			float(strip_index) * 31.91
+		)
+
+		for segment_index in range(segment_count + 1):
+			var local_center_z := (
+				float(segment_index)
+				* segment_length
+			)
+
+			var world_center_z := (
+				absolute_origin_z
+				+ local_center_z
+			)
+
+			var center_x := (
+				world_generator.get_road_center_x(
+					world_center_z
+				)
+			)
+
+			var side_direction := (
+				world_generator.get_road_side_direction(
+					world_center_z
+				)
+			)
+
+			var first_lateral_position := (
+				lateral_offset
+				- line_width * 0.5
+			)
+
+			var second_lateral_position := (
+				lateral_offset
+				+ line_width * 0.5
+			)
+
+			var first_world_x := (
+				center_x
+				+ side_direction.x
+				* first_lateral_position
+			)
+
+			var first_world_z := (
+				world_center_z
+				+ side_direction.y
+				* first_lateral_position
+			)
+
+			var second_world_x := (
+				center_x
+				+ side_direction.x
+				* second_lateral_position
+			)
+
+			var second_world_z := (
+				world_center_z
+				+ side_direction.y
+				* second_lateral_position
+			)
+
+			var first_height := (
+				world_generator.get_road_height(
+					first_world_z
+				)
+				+ road_height_offset
+				+ marking_height_offset
+			)
+
+			var second_height := (
+				world_generator.get_road_height(
+					second_world_z
+				)
+				+ road_height_offset
+				+ marking_height_offset
+			)
+
+			var first_local := Vector3(
+				first_world_x
+					- absolute_reference_x,
+				first_height,
+				first_world_z
+					- absolute_origin_z
+			)
+
+			var second_local := Vector3(
+				second_world_x
+					- absolute_reference_x,
+				second_height,
+				second_world_z
+					- absolute_origin_z
+			)
+
+			var uv_z := (
+				bounded_uv_base
+				+ local_center_z
+				/ texture_repeat_length
+			)
+
+			surface_tool.set_normal(Vector3.UP)
+			surface_tool.set_uv(Vector2(0.0, uv_z))
+			surface_tool.set_uv2(pattern_offset)
+			surface_tool.add_vertex(first_local)
+
+			surface_tool.set_normal(Vector3.UP)
+			surface_tool.set_uv(Vector2(1.0, uv_z))
+			surface_tool.set_uv2(pattern_offset)
+			surface_tool.add_vertex(second_local)
+
+		for segment_index in range(segment_count):
+			var first_current := (
+				first_strip_vertex
+				+ segment_index * 2
+			)
+
+			var second_current := (
+				first_current + 1
+			)
+
+			var first_next := (
+				first_current + 2
+			)
+
+			var second_next := (
+				first_current + 3
+			)
+
+			surface_tool.add_index(first_current)
+			surface_tool.add_index(second_current)
+			surface_tool.add_index(first_next)
+
+			surface_tool.add_index(second_current)
+			surface_tool.add_index(second_next)
+			surface_tool.add_index(first_next)
+
+		first_strip_vertex += (
+			segment_count + 1
+		) * 2
+
+	surface_tool.commit(target_mesh)
