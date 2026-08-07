@@ -28,6 +28,7 @@ var boundary_warp_amplitude: float = 3000.0
 @export_range(0.000001, 0.001, 0.000001)
 var boundary_warp_frequency: float = 0.00004
 
+@export var maximum_cached_regions: int = 256
 
 @export_category("Sediment")
 
@@ -293,6 +294,13 @@ func _get_region_point(
 	)
 
 	_region_cache[cell] = region
+	
+	if _region_cache.size() > maximum_cached_regions:
+		_region_cache.clear()
+
+		# Reinsert the region we just generated so this call
+		# still leaves the requested region cached.
+		_region_cache[cell] = region
 
 	return region
 

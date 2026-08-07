@@ -55,6 +55,7 @@ terrain_chunk_scene = ExtResource("2_rwgxs")
 world_generator = NodePath("../WorldGenerator")
 floating_origin = NodePath("../FloatingOrigin")
 max_chunks_per_frame = 3
+side_distance_fraction = 0.6
 
 [node name="RoadManager" type="Node3D" parent="." unique_id=127606650 node_paths=PackedStringArray("player", "world_generator", "floating_origin")]
 script = ExtResource("4_qfnet")

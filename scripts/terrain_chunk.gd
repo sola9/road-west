@@ -38,6 +38,11 @@ extends Node3D
 # Variation in the raised profile through valleys.
 @export var road_valley_variation: float = 1.5
 
+@export_category("Biome Rendering")
+
+@export_range(1, 16, 1)
+var biome_color_resolution: int = 4
+
 @onready var terrain_mesh_instance: MeshInstance3D = $TerrainMesh
 @onready var collision_shape: CollisionShape3D = \
 	$TerrainMesh/StaticBody3D/CollisionShape3D
@@ -133,6 +138,9 @@ func _generate_terrain() -> void:
 	height_data.resize(
 		vertices_per_side * vertices_per_side
 	)
+	var biome_colors: Array[Color] = (
+		_build_biome_color_grid()
+	)
 
 	for z_index in range(vertices_per_side):
 		for x_index in range(vertices_per_side):
@@ -148,12 +156,12 @@ func _generate_terrain() -> void:
 			)
 			
 			var biome_color := (
-				world_generator.get_biome_terrain_color(
-					world_x,
-					height,
-					world_z
+				_sample_biome_color_grid(
+					biome_colors,
+					local_x,
+					local_z
 				)
-			)
+			)	
 
 			var vertex_index := (
 				z_index * vertices_per_side
@@ -320,4 +328,163 @@ func _get_terrain_uv(
 			/ terrain_texture_repeat_length,
 		wrapped_world_z
 			/ terrain_texture_repeat_length
+	)
+
+func _build_biome_color_grid() -> Array[Color]:
+	var grid_resolution := mini(
+		biome_color_resolution,
+		resolution
+	)
+
+	var vertices_per_side := (
+		grid_resolution + 1
+	)
+
+	var colors: Array[Color] = []
+	colors.resize(
+		vertices_per_side
+		* vertices_per_side
+	)
+
+	for grid_z in range(vertices_per_side):
+		for grid_x in range(vertices_per_side):
+			var normalized_x := (
+				float(grid_x)
+				/ float(grid_resolution)
+			)
+
+			var normalized_z := (
+				float(grid_z)
+				/ float(grid_resolution)
+			)
+
+			var local_x := (
+				normalized_x * chunk_size
+			)
+
+			var local_z := (
+				normalized_z * chunk_size
+			)
+
+			var world_x: float = (
+				absolute_origin_x
+				+ local_x
+			)
+
+			var world_z: float = (
+				absolute_origin_z
+				+ local_z
+			)
+
+			var world_y: float = (
+				world_generator.get_world_height(
+					world_x,
+					world_z
+				)
+			)
+
+			var color := (
+				world_generator
+				.get_biome_terrain_color(
+					world_x,
+					world_y,
+					world_z
+				)
+			)
+
+			var index := (
+				grid_z * vertices_per_side
+				+ grid_x
+			)
+
+			colors[index] = color
+
+	return colors
+
+func _sample_biome_color_grid(
+	colors: Array[Color],
+	local_x: float,
+	local_z: float
+) -> Color:
+	var grid_resolution := mini(
+		biome_color_resolution,
+		resolution
+	)
+
+	var vertices_per_side := (
+		grid_resolution + 1
+	)
+
+	var normalized_x := clampf(
+		local_x / chunk_size,
+		0.0,
+		1.0
+	)
+
+	var normalized_z := clampf(
+		local_z / chunk_size,
+		0.0,
+		1.0
+	)
+
+	var grid_x := (
+		normalized_x
+		* float(grid_resolution)
+	)
+
+	var grid_z := (
+		normalized_z
+		* float(grid_resolution)
+	)
+
+	var x0 := floori(grid_x)
+	var z0 := floori(grid_z)
+
+	var x1 := mini(
+		x0 + 1,
+		grid_resolution
+	)
+
+	var z1 := mini(
+		z0 + 1,
+		grid_resolution
+	)
+
+	var blend_x := (
+		grid_x - float(x0)
+	)
+
+	var blend_z := (
+		grid_z - float(z0)
+	)
+
+	var color_00: Color = colors[
+		z0 * vertices_per_side + x0
+	]
+
+	var color_10: Color = colors[
+		z0 * vertices_per_side + x1
+	]
+
+	var color_01: Color = colors[
+		z1 * vertices_per_side + x0
+	]
+
+	var color_11: Color = colors[
+		z1 * vertices_per_side + x1
+	]
+
+	var color_top := color_00.lerp(
+		color_10,
+		blend_x
+	)
+
+	var color_bottom := color_01.lerp(
+		color_11,
+		blend_x
+	)
+
+	return color_top.lerp(
+		color_bottom,
+		blend_z
 	)
