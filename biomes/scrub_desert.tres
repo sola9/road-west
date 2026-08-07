@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BiomeDefinition" format=3 uid="uid://cfxtuva34s7np"]
+
+[ext_resource type="Script" uid="uid://cs5i07eihn7hl" path="res://scripts/biomes/biome_definition.gd" id="1_cuxen"]
+
+[resource]
+script = ExtResource("1_cuxen")
+biome_name = "Scrub Desert"
+selection_weight = 30.0
+debug_color = Color(0.29999995, 1, 0, 1)
+terrain_tint = Color(0.28349406, 0.2123827, 0.121415116, 1)
+metadata/_custom_type_script = "uid://cs5i07eihn7hl"

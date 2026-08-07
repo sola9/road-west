@@ -146,6 +146,14 @@ func _generate_terrain() -> void:
 				world_x,
 				world_z
 			)
+			
+			var biome_color := (
+				world_generator.get_biome_terrain_color(
+					world_x,
+					height,
+					world_z
+				)
+			)
 
 			var vertex_index := (
 				z_index * vertices_per_side
@@ -154,6 +162,10 @@ func _generate_terrain() -> void:
 
 			height_data[vertex_index] = height
 
+			surface_tool.set_color(
+				biome_color
+			)
+			
 			surface_tool.set_uv(
 				_get_terrain_uv(local_x, local_z)
 			)
@@ -206,11 +218,6 @@ func _generate_terrain() -> void:
 	if terrain_material != null:
 		terrain_mesh_instance.material_override = terrain_material
 
-	#_update_collision(
-	#	height_data,
-	#	vertices_per_side,
-	#	step
-	#)
 	
 func _update_collision(
 	height_data: PackedFloat32Array,

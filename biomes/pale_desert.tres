@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BiomeDefinition" format=3 uid="uid://cbd4ik38ghy8v"]
+
+[ext_resource type="Script" uid="uid://cs5i07eihn7hl" path="res://scripts/biomes/biome_definition.gd" id="1_gvo1j"]
+
+[resource]
+script = ExtResource("1_gvo1j")
+biome_name = "Pale Desert"
+selection_weight = 5.0
+debug_color = Color(0, 1, 0.95000005, 1)
+terrain_tint = Color(0.9359561, 0.8665607, 0.781824, 1)
+metadata/_custom_type_script = "uid://cs5i07eihn7hl"

@@ -36,6 +36,9 @@ extends Node
 @export var road_embankment_transition: float = 1.0
 @export var road_max_embankment_height: float = 1.5
 
+@export_category("Biomes")
+@export var biome_generator: BiomeGenerator
+@export var debug_biome_colors: bool = false
 
 var terrain_noise := FastNoiseLite.new()
 var rolling_noise := FastNoiseLite.new()
@@ -68,6 +71,8 @@ func ensure_configured() -> void:
 
 	_configure_noise()
 	road_height_cache.clear()
+	if biome_generator != null:
+		biome_generator.configure(world_seed)
 	is_configured = true
 	
 func _configure_noise() -> void:
@@ -434,3 +439,31 @@ func clear_runtime_caches() -> void:
 	
 func _on_origin_shifted(_shift: Vector3) -> void:
 	clear_runtime_caches()
+
+func get_biome_sample(
+	world_x: float,
+	world_z: float
+) -> BiomeSample:
+	if biome_generator == null:
+		return BiomeSample.new()
+
+	return biome_generator.sample(
+		world_x,
+		world_z
+	)
+
+
+func get_biome_terrain_color(
+	world_x: float,
+	world_y: float,
+	world_z: float
+) -> Color:
+	if biome_generator == null:
+		return Color.WHITE
+
+	return biome_generator.get_terrain_color(
+		world_x,
+		world_y,
+		world_z,
+		debug_biome_colors
+	)

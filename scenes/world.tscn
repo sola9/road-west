@@ -5,10 +5,16 @@
 [ext_resource type="Script" uid="uid://cekiajkefwfxt" path="res://scripts/floating_origin.gd" id="2_4mrxx"]
 [ext_resource type="PackedScene" uid="uid://bpyru2mqqcaot" path="res://scenes/terrain_chunk.tscn" id="2_rwgxs"]
 [ext_resource type="Script" uid="uid://pv7ib6hd2q6k" path="res://scripts/player.gd" id="3_4wyf3"]
+[ext_resource type="Script" uid="uid://cs5i07eihn7hl" path="res://scripts/biomes/biome_definition.gd" id="3_xo05s"]
+[ext_resource type="Resource" uid="uid://cbd4ik38ghy8v" path="res://biomes/pale_desert.tres" id="4_dss4m"]
 [ext_resource type="Texture2D" uid="uid://c6xdk5ukbsfiy" path="res://kloppenheim_05_puresky_2k.exr" id="4_k0juu"]
 [ext_resource type="Script" uid="uid://dvs07yennblk0" path="res://scripts/road_manager.gd" id="4_qfnet"]
+[ext_resource type="Resource" uid="uid://bxax5msfqnon5" path="res://biomes/red_badlands.tres" id="5_7t5mc"]
 [ext_resource type="PackedScene" uid="uid://dvk4jb54pokna" path="res://scenes/road_chunk.tscn" id="5_i7141"]
+[ext_resource type="Resource" uid="uid://rdwk5tbo7j6w" path="res://biomes/sandy_desert.tres" id="6_lakw3"]
+[ext_resource type="Resource" uid="uid://cfxtuva34s7np" path="res://biomes/scrub_desert.tres" id="7_pm21f"]
 [ext_resource type="Script" uid="uid://ri43l3nl6ysd" path="res://scripts/pause_menu.gd" id="9_7r4gi"]
+[ext_resource type="Script" uid="uid://cqtkwj08cr8ip" path="res://scripts/biomes/biome_generator.gd" id="10_w7kh3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rwgxs"]
 radius = 0.4
@@ -27,10 +33,16 @@ fog_sky_affect = 0.0
 
 [node name="World" type="Node3D" unique_id=994033353]
 
-[node name="WorldGenerator" type="Node" parent="." unique_id=1089810936 node_paths=PackedStringArray("floating_origin")]
+[node name="WorldGenerator" type="Node" parent="." unique_id=1089810936 node_paths=PackedStringArray("floating_origin", "biome_generator")]
 script = ExtResource("1_71j4m")
 floating_origin = NodePath("../FloatingOrigin")
 road_width = 10.0
+biome_generator = NodePath("../BiomeGenerator")
+
+[node name="BiomeGenerator" type="Node" parent="." unique_id=2061739188]
+script = ExtResource("10_w7kh3")
+biomes = Array[ExtResource("3_xo05s")]([ExtResource("6_lakw3"), ExtResource("7_pm21f"), ExtResource("5_7t5mc"), ExtResource("4_dss4m")])
+metadata/_custom_type_script = "uid://cqtkwj08cr8ip"
 
 [node name="FloatingOrigin" type="Node" parent="." unique_id=669139200 node_paths=PackedStringArray("player")]
 script = ExtResource("2_4mrxx")
@@ -42,7 +54,7 @@ player = NodePath("../Player")
 terrain_chunk_scene = ExtResource("2_rwgxs")
 world_generator = NodePath("../WorldGenerator")
 floating_origin = NodePath("../FloatingOrigin")
-max_chunks_per_frame = 2
+max_chunks_per_frame = 3
 
 [node name="RoadManager" type="Node3D" parent="." unique_id=127606650 node_paths=PackedStringArray("player", "world_generator", "floating_origin")]
 script = ExtResource("4_qfnet")

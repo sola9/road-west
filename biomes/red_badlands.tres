@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BiomeDefinition" format=3 uid="uid://bxax5msfqnon5"]
+
+[ext_resource type="Script" uid="uid://cs5i07eihn7hl" path="res://scripts/biomes/biome_definition.gd" id="1_tce04"]
+
+[resource]
+script = ExtResource("1_tce04")
+biome_name = "Red Badlands"
+selection_weight = 15.0
+debug_color = Color(1, 0, 0, 1)
+terrain_tint = Color(0.5072836, 0.19839272, 0.15745631, 1)
+sediment_enabled = true
+sediment_strength = 0.9
+metadata/_custom_type_script = "uid://cs5i07eihn7hl"
