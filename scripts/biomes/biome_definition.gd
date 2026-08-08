@@ -51,6 +51,9 @@ var sediment_edge_blend: float = 0.08
 	Color(0.44, 0.16, 0.09, 1.0)
 ]
 
+@export_category("Props")
+
+@export var prop_rules: Array[BiomePropSpawnRule] = []
 
 func get_surface_tint(
 	world_y: float,
@@ -128,3 +131,21 @@ func get_surface_tint(
 		sediment_color,
 		sediment_strength
 	)
+	
+func get_prop_density(
+	prop_definition: BiomePropDefinition
+) -> float:
+	if prop_definition == null:
+		return 0.0
+
+	for rule in prop_rules:
+		if rule == null:
+			continue
+
+		if rule.prop == prop_definition:
+			return maxf(
+				rule.density_per_square_km,
+				0.0
+			)
+
+	return 0.0

@@ -1,6 +1,27 @@
 [gd_resource type="Resource" script_class="BiomeDefinition" format=3 uid="uid://cfxtuva34s7np"]
 
 [ext_resource type="Script" uid="uid://cs5i07eihn7hl" path="res://scripts/biomes/biome_definition.gd" id="1_cuxen"]
+[ext_resource type="Script" uid="uid://c586xdl5v3xa" path="res://scripts/biomes/biome_prop_spawn_rule.gd" id="1_x3ref"]
+[ext_resource type="Resource" uid="uid://6567b72lbk0x" path="res://props/definitions/rock1.tres" id="2_lx4ce"]
+[ext_resource type="Resource" uid="uid://c4obfxr4agk64" path="res://props/definitions/cactus.tres" id="3_hokbx"]
+[ext_resource type="Resource" uid="uid://jtaa8knhwnxt" path="res://props/definitions/bush.tres" id="4_58rag"]
+
+[sub_resource type="Resource" id="Resource_lx4ce"]
+script = ExtResource("1_x3ref")
+prop = ExtResource("2_lx4ce")
+metadata/_custom_type_script = "uid://c586xdl5v3xa"
+
+[sub_resource type="Resource" id="Resource_hokbx"]
+script = ExtResource("1_x3ref")
+prop = ExtResource("3_hokbx")
+density_per_square_km = 70.0
+metadata/_custom_type_script = "uid://c586xdl5v3xa"
+
+[sub_resource type="Resource" id="Resource_58rag"]
+script = ExtResource("1_x3ref")
+prop = ExtResource("4_58rag")
+density_per_square_km = 400.0
+metadata/_custom_type_script = "uid://c586xdl5v3xa"
 
 [resource]
 script = ExtResource("1_cuxen")
@@ -8,4 +29,5 @@ biome_name = "Scrub Desert"
 selection_weight = 30.0
 debug_color = Color(0.29999995, 1, 0, 1)
 terrain_tint = Color(0.28349406, 0.2123827, 0.121415116, 1)
+prop_rules = Array[ExtResource("1_x3ref")]([SubResource("Resource_lx4ce"), SubResource("Resource_hokbx"), SubResource("Resource_58rag")])
 metadata/_custom_type_script = "uid://cs5i07eihn7hl"

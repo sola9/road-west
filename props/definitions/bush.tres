@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BiomePropDefinition" format=3 uid="uid://jtaa8knhwnxt"]
+
+[ext_resource type="Script" uid="uid://cenoxd2vfvomg" path="res://scripts/biomes/biome_prop_definition.gd" id="1_1q5hv"]
+[ext_resource type="ArrayMesh" uid="uid://c2wlstx72clgd" path="res://assets/props/bush4.glb" id="1_hr66h"]
+
+[resource]
+script = ExtResource("1_1q5hv")
+prop_name = "Bush"
+spawn_seed_offset = 3
+mesh = ExtResource("1_hr66h")
+metadata/_custom_type_script = "uid://cenoxd2vfvomg"

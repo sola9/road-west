@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BiomePropDefinition" format=3 uid="uid://c4obfxr4agk64"]
+
+[ext_resource type="Script" uid="uid://cenoxd2vfvomg" path="res://scripts/biomes/biome_prop_definition.gd" id="1_l0s62"]
+[ext_resource type="ArrayMesh" uid="uid://pep6ymsevym3" path="res://assets/props/cactustextured.glb" id="1_pt4w7"]
+
+[resource]
+script = ExtResource("1_l0s62")
+prop_name = "Cactus"
+spawn_seed_offset = 37
+mesh = ExtResource("1_pt4w7")
+metadata/_custom_type_script = "uid://cenoxd2vfvomg"

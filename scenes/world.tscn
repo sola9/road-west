@@ -15,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://cfxtuva34s7np" path="res://biomes/scrub_desert.tres" id="7_pm21f"]
 [ext_resource type="Script" uid="uid://ri43l3nl6ysd" path="res://scripts/pause_menu.gd" id="9_7r4gi"]
 [ext_resource type="Script" uid="uid://cqtkwj08cr8ip" path="res://scripts/biomes/biome_generator.gd" id="10_w7kh3"]
+[ext_resource type="Script" uid="uid://mvtmsysa3htd" path="res://scripts/world/prop_manager.gd" id="13_dss4m"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rwgxs"]
 radius = 0.4
@@ -64,6 +65,13 @@ world_generator = NodePath("../WorldGenerator")
 road_chunk_scene = ExtResource("5_i7141")
 floating_origin = NodePath("../FloatingOrigin")
 render_distance = 16
+
+[node name="PropManager" type="Node3D" parent="." unique_id=1809188180 node_paths=PackedStringArray("player", "world_generator", "biome_generator", "floating_origin")]
+script = ExtResource("13_dss4m")
+player = NodePath("../Player")
+world_generator = NodePath("../WorldGenerator")
+biome_generator = NodePath("../BiomeGenerator")
+floating_origin = NodePath("../FloatingOrigin")
 
 [node name="Player" type="CharacterBody3D" parent="." unique_id=1307345321]
 script = ExtResource("3_4wyf3")

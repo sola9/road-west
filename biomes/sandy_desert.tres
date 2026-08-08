@@ -1,6 +1,20 @@
 [gd_resource type="Resource" script_class="BiomeDefinition" format=3 uid="uid://rdwk5tbo7j6w"]
 
+[ext_resource type="Script" uid="uid://c586xdl5v3xa" path="res://scripts/biomes/biome_prop_spawn_rule.gd" id="1_iqkk3"]
 [ext_resource type="Script" uid="uid://cs5i07eihn7hl" path="res://scripts/biomes/biome_definition.gd" id="1_sjtrv"]
+[ext_resource type="Resource" uid="uid://c4obfxr4agk64" path="res://props/definitions/cactus.tres" id="2_jjr5a"]
+[ext_resource type="Resource" uid="uid://6567b72lbk0x" path="res://props/definitions/rock1.tres" id="3_v13ue"]
+
+[sub_resource type="Resource" id="Resource_j6ahu"]
+script = ExtResource("1_iqkk3")
+prop = ExtResource("2_jjr5a")
+density_per_square_km = 250.0
+metadata/_custom_type_script = "uid://c586xdl5v3xa"
+
+[sub_resource type="Resource" id="Resource_ord6o"]
+script = ExtResource("1_iqkk3")
+prop = ExtResource("3_v13ue")
+metadata/_custom_type_script = "uid://c586xdl5v3xa"
 
 [resource]
 script = ExtResource("1_sjtrv")
@@ -8,4 +22,5 @@ biome_name = "Sandy Desert"
 selection_weight = 50.0
 debug_color = Color(1, 0.9666667, 0, 1)
 terrain_tint = Color(0.7794941, 0.55656993, 0.23585945, 1)
+prop_rules = Array[ExtResource("1_iqkk3")]([SubResource("Resource_j6ahu"), SubResource("Resource_ord6o")])
 metadata/_custom_type_script = "uid://cs5i07eihn7hl"

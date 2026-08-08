@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BiomePropDefinition" format=3 uid="uid://6567b72lbk0x"]
+
+[ext_resource type="ArrayMesh" uid="uid://bubrdc88kmiv6" path="res://assets/props/rock1.glb" id="1_klpd4"]
+[ext_resource type="Script" uid="uid://cenoxd2vfvomg" path="res://scripts/biomes/biome_prop_definition.gd" id="1_qch3s"]
+
+[resource]
+script = ExtResource("1_qch3s")
+prop_name = "Rock 1"
+spawn_seed_offset = 43
+mesh = ExtResource("1_klpd4")
+metadata/_custom_type_script = "uid://cenoxd2vfvomg"

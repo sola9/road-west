@@ -1,6 +1,27 @@
 [gd_resource type="Resource" script_class="BiomeDefinition" format=3 uid="uid://bxax5msfqnon5"]
 
+[ext_resource type="Script" uid="uid://c586xdl5v3xa" path="res://scripts/biomes/biome_prop_spawn_rule.gd" id="1_mpvga"]
 [ext_resource type="Script" uid="uid://cs5i07eihn7hl" path="res://scripts/biomes/biome_definition.gd" id="1_tce04"]
+[ext_resource type="Resource" uid="uid://jtaa8knhwnxt" path="res://props/definitions/bush.tres" id="2_wq0pk"]
+[ext_resource type="Resource" uid="uid://6567b72lbk0x" path="res://props/definitions/rock1.tres" id="3_j6ahu"]
+[ext_resource type="Resource" uid="uid://bl2rtnjtq62ix" path="res://props/definitions/rock2.tres" id="4_wq0pk"]
+
+[sub_resource type="Resource" id="Resource_3kp4q"]
+script = ExtResource("1_mpvga")
+prop = ExtResource("2_wq0pk")
+metadata/_custom_type_script = "uid://c586xdl5v3xa"
+
+[sub_resource type="Resource" id="Resource_idkf4"]
+script = ExtResource("1_mpvga")
+prop = ExtResource("3_j6ahu")
+density_per_square_km = 50.0
+metadata/_custom_type_script = "uid://c586xdl5v3xa"
+
+[sub_resource type="Resource" id="Resource_8shxr"]
+script = ExtResource("1_mpvga")
+prop = ExtResource("4_wq0pk")
+density_per_square_km = 200.0
+metadata/_custom_type_script = "uid://c586xdl5v3xa"
 
 [resource]
 script = ExtResource("1_tce04")
@@ -10,4 +31,5 @@ debug_color = Color(1, 0, 0, 1)
 terrain_tint = Color(0.5072836, 0.19839272, 0.15745631, 1)
 sediment_enabled = true
 sediment_strength = 0.9
+prop_rules = Array[ExtResource("1_mpvga")]([SubResource("Resource_3kp4q"), SubResource("Resource_idkf4"), SubResource("Resource_8shxr")])
 metadata/_custom_type_script = "uid://cs5i07eihn7hl"
