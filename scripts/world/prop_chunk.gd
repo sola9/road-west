@@ -10,6 +10,7 @@ var absolute_origin_z: float = 0.0
 
 var floating_origin: FloatingOrigin
 
+var collision_candidates: Array[PropCollisionCandidate] = []
 
 func setup(
 	new_coordinate: Vector2i,
@@ -85,3 +86,47 @@ func add_prop_instances(
 	instance.multimesh = multimesh
 
 	add_child(instance)
+	
+func add_collision_candidates(
+	definition: BiomePropDefinition,
+	transforms: Array[Transform3D]
+) -> void:
+	if definition == null:
+		return
+
+	if not definition.collision_enabled:
+		return
+
+	if definition.collision_shape == null:
+		return
+
+	for instance_index in range(
+		transforms.size()
+	):
+		var candidate := (
+			PropCollisionCandidate.new()
+		)
+
+		candidate.chunk_coordinate = (
+			chunk_coordinate
+		)
+
+		candidate.definition = definition
+
+		candidate.local_transform = (
+			transforms[instance_index]
+		)
+
+		candidate.candidate_id = (
+			"%d:%d:%d:%d"
+			% [
+				chunk_coordinate.x,
+				chunk_coordinate.y,
+				definition.spawn_seed_offset,
+				instance_index
+			]
+		)
+
+		collision_candidates.append(
+			candidate
+		)

@@ -3,9 +3,15 @@
 [ext_resource type="ArrayMesh" uid="uid://bubrdc88kmiv6" path="res://assets/props/rock1.glb" id="1_klpd4"]
 [ext_resource type="Script" uid="uid://cenoxd2vfvomg" path="res://scripts/biomes/biome_prop_definition.gd" id="1_qch3s"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_pt4w7"]
+
 [resource]
 script = ExtResource("1_qch3s")
 prop_name = "Rock 1"
 spawn_seed_offset = 43
 mesh = ExtResource("1_klpd4")
+collision_enabled = true
+collision_shape = SubResource("SphereShape3D_pt4w7")
+collision_offset = null
+collision_rotation_degrees = null
 metadata/_custom_type_script = "uid://cenoxd2vfvomg"

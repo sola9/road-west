@@ -14,13 +14,12 @@ metadata/_custom_type_script = "uid://c586xdl5v3xa"
 [sub_resource type="Resource" id="Resource_hokbx"]
 script = ExtResource("1_x3ref")
 prop = ExtResource("3_hokbx")
-density_per_square_km = 70.0
 metadata/_custom_type_script = "uid://c586xdl5v3xa"
 
 [sub_resource type="Resource" id="Resource_58rag"]
 script = ExtResource("1_x3ref")
 prop = ExtResource("4_58rag")
-density_per_square_km = 400.0
+density_per_square_km = 1000.0
 metadata/_custom_type_script = "uid://c586xdl5v3xa"
 
 [resource]

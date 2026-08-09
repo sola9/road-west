@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_j6ahu"]
 script = ExtResource("1_iqkk3")
 prop = ExtResource("2_jjr5a")
-density_per_square_km = 250.0
+density_per_square_km = 500.0
 metadata/_custom_type_script = "uid://c586xdl5v3xa"
 
 [sub_resource type="Resource" id="Resource_ord6o"]

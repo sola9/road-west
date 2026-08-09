@@ -3,9 +3,15 @@
 [ext_resource type="Script" uid="uid://cenoxd2vfvomg" path="res://scripts/biomes/biome_prop_definition.gd" id="1_l0s62"]
 [ext_resource type="ArrayMesh" uid="uid://pep6ymsevym3" path="res://assets/props/cactustextured.glb" id="1_pt4w7"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_dss4m"]
+
 [resource]
 script = ExtResource("1_l0s62")
 prop_name = "Cactus"
 spawn_seed_offset = 37
 mesh = ExtResource("1_pt4w7")
+collision_enabled = true
+collision_shape = SubResource("BoxShape3D_dss4m")
+collision_offset = null
+collision_rotation_degrees = null
 metadata/_custom_type_script = "uid://cenoxd2vfvomg"

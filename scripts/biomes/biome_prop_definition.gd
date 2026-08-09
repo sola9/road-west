@@ -37,3 +37,15 @@ var maximum_slope_degrees: float = 35.0
 # Extra space beyond the asphalt edge.
 @export_range(0.0, 100.0, 0.5, "suffix:m")
 var road_clearance: float = 4.0
+
+@export_category("Collision")
+
+@export var collision_enabled: bool = false
+
+@export var collision_shape: Shape3D
+
+# Use these only if the collision shape does not line up with
+# the visual mesh's origin.
+@export var collision_offset: Vector3 = Vector3.ZERO
+
+@export var collision_rotation_degrees: Vector3 = Vector3.ZERO

@@ -72,6 +72,12 @@ player = NodePath("../Player")
 world_generator = NodePath("../WorldGenerator")
 biome_generator = NodePath("../BiomeGenerator")
 floating_origin = NodePath("../FloatingOrigin")
+chunk_size = null
+render_distance = null
+unload_margin = null
+generation_budget_ms = null
+max_chunks_per_frame = null
+slope_sample_distance = null
 
 [node name="Player" type="CharacterBody3D" parent="." unique_id=1307345321]
 script = ExtResource("3_4wyf3")
