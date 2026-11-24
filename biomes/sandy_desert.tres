@@ -21,6 +21,6 @@ script = ExtResource("1_sjtrv")
 biome_name = "Sandy Desert"
 selection_weight = 50.0
 debug_color = Color(1, 0.9666667, 0, 1)
-terrain_tint = Color(0.7794941, 0.55656993, 0.23585945, 1)
+terrain_tint = Color(0.7990086, 0.45008934, 0.20661262, 1)
 prop_rules = Array[ExtResource("1_iqkk3")]([SubResource("Resource_j6ahu"), SubResource("Resource_ord6o")])
 metadata/_custom_type_script = "uid://cs5i07eihn7hl"
